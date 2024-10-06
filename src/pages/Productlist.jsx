@@ -16,12 +16,12 @@ const Productlist = ({ isAdmin }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const productsPerPage = 20;
-
+    const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(`/api/admin/getbycategory/${category}`, {
+                const response = await axios.get(`${API_BASE_URL}/api/admin/getbycategory/${category}`, {
                     params: {
                         page: currentPage,
                         limit: productsPerPage
