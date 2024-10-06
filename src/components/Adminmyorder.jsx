@@ -9,7 +9,7 @@ import MorphingLoader from './MorphingLoader.jsx'; // Import the loader componen
 
 export default function TodaysOrders() {
     const currentDateInIST = new Date(Date.now());
-
+    const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
     const [orders, setOrders] = useState([]);
     const [date, setDate] = useState(currentDateInIST);
     const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +41,7 @@ export default function TodaysOrders() {
         try {
             const fetchDateInUTC = new Date(fetchDate.getTime());
             const formattedDate = fetchDateInUTC.toISOString().split('T')[0];
-            const response = await axios.get(`/api/admin/getorders/${formattedDate}`);
+            const response = await axios.get(`${API_BASE_URL}/api/admin/getorders/${formattedDate}`);
             if (response.data.success) {
                 setOrders(response.data.data);
             } else {
@@ -71,7 +71,7 @@ export default function TodaysOrders() {
         }));
 
         try {
-            const response = await axios.post('/api/admin/updateOrderStatus', updatedStatus);
+            const response = await axios.post(`${API_BASE_URL}/api/admin/updateOrderStatus`, updatedStatus);
             console.log('response', response);
             setAlertMessage(response.data.message);
             setAlertVisible(true);
