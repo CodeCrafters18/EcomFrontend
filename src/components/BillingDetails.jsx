@@ -5,7 +5,8 @@ import './BillingDetails.css'
 import {useNavigate} from 'react-router-dom'
 
 const BillingDetails = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
   useEffect(() => {
     // Dynamically load the Razorpay script
     const script = document.createElement('script');
@@ -51,7 +52,7 @@ const BillingDetails = () => {
         cart
       };
 
-      const response = await axios.post('/api/payment/createorder', submissionData);
+      const response = await axios.post(`${API_BASE_URL}/api/payment/createorder`, submissionData);
       if (response.data && response.data.data) {
         initializeRazorpay(response.data.data);
       } else {
@@ -98,7 +99,7 @@ const BillingDetails = () => {
         amount: orderData.amount
       };
 
-      const response = await axios.post('/api/payment/verify', verificationData);
+      const response = await axios.post(`${API_BASE_URL}/api/payment/verify`, verificationData);
       if (response.data.success) {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
