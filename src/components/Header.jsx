@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import './Header.css';
 import DeleteProduct from './adminDeleteProduct';
 export default function Header(isAdmin ) {
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
   const navigate = useNavigate();
   const [raj, setRaj] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function Header(isAdmin ) {
     setQuery(value);
 
     if (value) {
-      const response = await axios.get(`/api/products/search?query=${value}`);
+      const response = await axios.get(`${API_BASE_URL}/api/products/search?query=${value}`);
       if (response) {
         setResults(response.data);
       }
@@ -101,7 +102,7 @@ export default function Header(isAdmin ) {
 
   const logClick = async () => {
     if (Cookies.get('username')) {
-      await axios.post('/api/logout');
+      await axios.post(`${API_BASE_URL}/api/logout`);
       Cookies.remove('username');
       setRaj(false);
       setIsProfileMenuOpen(false);
