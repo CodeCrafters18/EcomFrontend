@@ -10,6 +10,7 @@ import MorphingLoader from './MorphingLoader'; // Import the MorphingLoader comp
 
 const Authcomponent = () => {
   const navigate = useNavigate();
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
   const [alertSuccessVisible, setAlertSuccessVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const [alertMessage, setAlertMessage] = useState('');
@@ -28,7 +29,7 @@ const Authcomponent = () => {
   const otpClick = async () => {
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`/api/checkotp/sendotp`, loggerdetails);
+      const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails);
       setFdjghjd(response);
       if (response && response.data && response.data.data) {
         setIsOtpPopupVisible(true);
@@ -51,7 +52,7 @@ const Authcomponent = () => {
 
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`/api/${type}`, formData);
+      const response = await axios.post(`${API_BASE_URL}/api/${type}`, formData);
       if (response.status === 285) {
         setLoggerdetails(response.data.data);
         setLogger(true);
