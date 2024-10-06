@@ -19,6 +19,7 @@ import AdminOrderTodayDetail from './pages/AdminTodayOrderDetail.jsx';
 
 // Create a custom hook for authentication
 const useAuth = () => {
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" ;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +28,7 @@ const useAuth = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('/api/admin/verify', { withCredentials: true });
+        const response = await axios.get(`${API_BASE_URL}/api/admin/verify`, { withCredentials: true });
         
         const { isAuthenticated, admin, user } = response.data.data;
         
