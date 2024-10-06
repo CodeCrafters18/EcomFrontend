@@ -6,6 +6,7 @@ import { ToggleLeft, ToggleRight } from "lucide-react";
 import AlertSuccessMessage from "./alertSuccess";
 
 const EditProductForm = () => {
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com";
   const [imgStatus, setImgStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [productData, setProductData] = useState(null);
@@ -26,7 +27,7 @@ const EditProductForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`/api/admin/getbyid/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/admin/getbyid/${id}`);
         setProductData(response.data.data);
       } catch (error) {
         console.log(error);
@@ -114,7 +115,7 @@ const EditProductForm = () => {
         headers["Content-Type"] = "application/json";
       }
 
-      const response = await axios.put(`/api/admin/update/${id}/${imgStatus}`, data, { headers });
+      const response = await axios.put(`${API_BASE_URL}/api/admin/update/${id}/${imgStatus}`, data, { headers });
       if (response.status === 200) {
         // Navigate to home with flash message
         navigate("/", { state: { message: response.data.message } });
