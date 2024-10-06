@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { AlertCircle, CheckCircle2, X } from 'lucide-react';
 
 export default function OtpInputWithValidation({details, numberOfDigits, onClose, fjkasdf }) {
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const [otpSuccess, setOtpSuccess] = useState(null);
@@ -38,7 +39,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
 
   const loginadmin = async () => {
     try {
-      await axios.post('/api/admin/login', {
+      await axios.post(`${API_BASE_URL}/api/admin/login`, {
         email: details.email,
         password: details.password,
       });
@@ -51,7 +52,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
 
   const userRegister = async () => {
     try {
-      await axios.post('/api/createuser', {
+      await axios.post(`${API_BASE_URL}/api/createuser`, {
         username: details.username,
         email: details.email,
         password: details.password,
