@@ -29,7 +29,7 @@ const Authcomponent = () => {
   const otpClick = async () => {
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails);
+      const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails,{  withCredentials: true  });
       setFdjghjd(response);
       if (response && response.data && response.data.data) {
         setIsOtpPopupVisible(true);
@@ -52,7 +52,7 @@ const Authcomponent = () => {
 
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`${API_BASE_URL}/api/${type}`, formData);
+      const response = await axios.post(`${API_BASE_URL}/api/${type}`, formData,{  withCredentials: true  });
       if (response.status === 285) {
         setLoggerdetails(response.data.data);
         setLogger(true);
