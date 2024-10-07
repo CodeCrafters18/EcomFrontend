@@ -9,12 +9,13 @@ import axios from 'axios';
 function ProductPage(isAdmin) {
   const { id } = useParams(); 
   const [productData, setProductData] = useState(null);
+  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" // Replace with your actual Render.com URL
 
   useEffect(() => {
     window.scrollTo(0, 0); 
     const fetchProductData = async () => {
       try {
-        const response = await axios.get(`/api/admin/getbyid/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/admin/getbyid/${id}`);
         response.data.data.id=id;
         response.data.data.verify=isAdmin.isAdmin;
         setProductData(response.data.data); 
