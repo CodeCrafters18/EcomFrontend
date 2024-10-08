@@ -20,7 +20,7 @@ export default function Header() {
   const [results, setResults] = useState([]);
   const [deletePopup, setDeletePopup] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { setDetails,setIsAuthenticated } = useContext(UserContext);
+  const { setDetails,setIsAuthenticated,setIsAdmin } = useContext(UserContext);
 
   const debounce = (func, delay) => {
     let timeout;
@@ -101,6 +101,7 @@ export default function Header() {
       if (isAuthenticated) {
         await axios.post(`${API_BASE_URL}/api/logout`,{},{withCredentials: true});
         setIsProfileMenuOpen(false);
+        setIsAdmin(false);
         setIsAuthenticated(false);
         setDetails({});
         navigate('/',{state: { message: 'Logged out successfully'}});

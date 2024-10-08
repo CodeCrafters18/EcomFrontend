@@ -8,7 +8,7 @@ import ProductCard from '../components/Productcard';
 import Navbar from '../components/Navbar';
 import MorphingLoader from '../components/MorphingLoader';
 
-const Productlist = ({ isAdmin }) => {
+const Productlist = () => {
     const { category } = useParams();
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +44,7 @@ const Productlist = ({ isAdmin }) => {
 
     return (
         <>
-            <Header isAdmin={isAdmin} />
+            <Header />
             <Navbar />
             <div className='allcards11'>
                 {isLoading ? (
@@ -60,7 +60,6 @@ const Productlist = ({ isAdmin }) => {
                                 originalPrice={product.price[1]}
                                 id={product._id}
                                 availability={product.availability}
-                                verify={isAdmin}
                             />   
                         </React.Fragment>
                     ))

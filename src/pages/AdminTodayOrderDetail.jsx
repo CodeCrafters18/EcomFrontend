@@ -6,14 +6,14 @@ import Footer from '../components/Footer';
 import OrderDetails from '../components/TodayOrderDetail.jsx';
 
 
-function AdminOrderTodayDetail(isAdmin) {
+function AdminOrderTodayDetail() {
   useEffect(() => {
     // Scroll to the top of the page on component mount
     window.scrollTo(0, 0);
   }, []);
   return (
     <>
-        <Header isAdmin={isAdmin}/>
+        <Header/>
         <Navbar/>
         <OrderDetails/>
         <Footer/>

@@ -85,7 +85,7 @@
 .current-price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #2196F3;
+  color: #2e8b57;
   margin-right: 0.5rem;
 }
 
@@ -150,21 +150,25 @@
 }
 
 .edit-btn {
-  background-color: #007bff;
+  background-color: #2e8b57;
   color: #ffffff;
 }
 
 .edit-btn:hover {
-  background-color: #0056b3;
+  color: #176628;
+  background-color: #ffffff;
+  border: 2px solid #2e8b57;
 }
 
 .delete-btn {
-  background-color: #dc3545;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #df0b0b;
+  border: 2px solid #df0b0b;
 }
 
 .delete-btn:hover {
-  background-color: #c82333;
+  background-color: #df0b0b;
+  color: #ffffff;
 }
 
 .edit-btn svg,

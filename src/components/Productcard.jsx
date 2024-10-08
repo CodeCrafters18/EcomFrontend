@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { Edit, Trash2 } from "lucide-react";
 import DeleteProduct from "./adminDeleteProduct.jsx";
+import { useUserContext } from "../context/UserContextProvider.jsx";
 
 const ProductCard = ({
-  verify,
   imageUrl,
   title,
   description,
@@ -15,6 +15,8 @@ const ProductCard = ({
   availability,
   id,
 }) => {
+  const { isAdmin } = useUserContext();
+  const verify = isAdmin;
   const navigate = useNavigate();
   const [deletePopup, setDeletePopup] = useState(false);
 

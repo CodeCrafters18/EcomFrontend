@@ -7,7 +7,7 @@ import Authcomponent from '../components/Authentication';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AlertFailureMessage from '../components/alertFailure.jsx';
 
-function Authpage(isAdmin){
+function Authpage(){
   const navigate = useNavigate();
   const location = useLocation();
   const [flashMessage, setFlashMessage] = useState(null);
@@ -21,7 +21,7 @@ function Authpage(isAdmin){
   }, [location.state, navigate]);
   return (
     <>
-        <Header isAdmin={isAdmin}/>
+        <Header/>
         {flashMessage && (
         <AlertFailureMessage
           message={flashMessage}

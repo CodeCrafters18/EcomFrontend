@@ -5,10 +5,10 @@ import Footer from '../components/Footer';
 import BillingDetails from '../components/BillingDetails';
 import BillCart from '../components/BillCart';
 
-function Checkout(isAdmin){
+function Checkout(){
 return (
     <>
-            <Header isAdmin={isAdmin}/>
+            <Header/>
             <Navbar />
             <div className="container" style={{ display: 'flex',flexWrap: 'wrap'}}>
                     <BillingDetails />

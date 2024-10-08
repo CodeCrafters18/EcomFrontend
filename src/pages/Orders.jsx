@@ -7,10 +7,10 @@ import MyOrders from "../components/Order.Component";
 import React from 'react';
 import Navbar from "../components/Navbar";
 
-function Orders(isAdmin){
+function Orders(){
   return (
     <>
-        <Header isAdmin={isAdmin}/>
+        <Header />
         <Navbar/>
         <MyOrders/>
         <Footer />

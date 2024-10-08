@@ -5,8 +5,9 @@ import Navbar from '../components/Navbar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import MorphingLoader from '../components/MorphingLoader';
 
-function ProductPage(isAdmin) {
+function ProductPage() {
   const { id } = useParams(); 
   const [productData, setProductData] = useState(null);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;// Replace with your actual Render.com URL
@@ -17,7 +18,6 @@ function ProductPage(isAdmin) {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/admin/getbyid/${id}`);
         response.data.data.id=id;
-        response.data.data.verify=isAdmin.isAdmin;
         setProductData(response.data.data); 
       } catch (error) {
         console.error('Error fetching product data:', error);
@@ -28,12 +28,12 @@ function ProductPage(isAdmin) {
   }, [id]);
 
   if (!productData) {
-    return <div>Loading...</div>;
+    return <MorphingLoader />;
   }
 
   return (
     <div>
-      <Header isAdmin={isAdmin}/>
+      <Header/>
       <Navbar />
       <ProductDetail {...productData} />
       <Footer />

@@ -25,7 +25,7 @@ const slides = [
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;// Replace with your actual Render.com URL
 
-const Home = (isAdmin ) => {
+const Home = () => {
   const [products, setProducts] = useState([]);
   const [flashMessage, setFlashMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -100,7 +100,7 @@ const Home = (isAdmin ) => {
 
   return (
     <>
-      <Header isAdmin={isAdmin} />
+      <Header  />
       <Navbar />
       <Slider slides={slides} />
       {flashMessage && (
@@ -129,7 +129,6 @@ const Home = (isAdmin ) => {
               originalPrice={product.price[1]}
               id={product._id}
               availability={product.availability}
-              verify={isAdmin.isAdmin}
             />   
           ))
         ) : (

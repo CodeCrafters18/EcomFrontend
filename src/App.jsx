@@ -50,14 +50,6 @@ const UserProtectedRoute = ({ children }) => {
 function AppContent() {
   const { isAuthenticated, isAdmin, isLoading, details } = useUserContext();
 
-  useEffect(() => {
-    if (details.username) {
-      Cookies.set('username', `${details.username}`, { expires: isAdmin ? 1 : 7 });
-    } else if (!isAuthenticated) {
-      Cookies.remove('username');
-    }
-  }, [details, isAdmin, isAuthenticated]);
-
   if (isLoading) {
     return <MorphingLoader />;
   }

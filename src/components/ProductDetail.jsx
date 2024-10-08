@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Edit, Trash2, Minus, Plus, ShoppingCart } from 'lucide-react';
 import './ProductDetail.css';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { set } from 'date-fns';
 import DeleteProduct from './adminDeleteProduct';
+import { useUserContext } from '../context/UserContextProvider';
 
 const ProductDetail = ({
-  verify,
   productName,
   price,
   description,
@@ -18,6 +16,8 @@ const ProductDetail = ({
   characs,
   availability,
 }) => {
+  const {isAdmin}=useUserContext();
+  const verify = isAdmin;
   const [quantity, setQuantity] = useState(1);
   const [deletePopup, setDeletePopup] = useState(false);
   const navigate = useNavigate();
