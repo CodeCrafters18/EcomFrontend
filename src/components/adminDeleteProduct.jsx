@@ -4,14 +4,14 @@ import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const DeleteProduct = ({ productName, id, onClose }) => {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const handleConfirmDelete = async (e) => {
     e.stopPropagation(); 
     try {
       const deleteProduct = await axios.delete(`${API_BASE_URL}/api/admin/delete/${id}`);
       if (deleteProduct) {
-        navigate('/');
+        navigate('/', { state: { message: "Product deleted successfully" } });
         window.location.reload();  // Reload the page after successful deletion
       }
     } catch (error) {

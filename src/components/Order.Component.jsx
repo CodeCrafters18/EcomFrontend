@@ -6,7 +6,7 @@ import './Order.Component.css'
 import MorphingLoader from './MorphingLoader';
 
 const Orders = () => {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" ;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/orders`);
+        const response = await axios.get(`${API_BASE_URL}/api/orders`,{ withCredentials: true });
         if (response.status === 200) {
           setOrders(response.data.data.ordersUser);
         }

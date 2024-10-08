@@ -6,7 +6,7 @@ import { ToggleLeft, ToggleRight } from "lucide-react";
 import AlertSuccessMessage from "./alertSuccess";
 
 const EditProductForm = () => {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [imgStatus, setImgStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [productData, setProductData] = useState(null);

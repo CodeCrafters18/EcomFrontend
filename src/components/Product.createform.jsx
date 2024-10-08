@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToggleLeft, ToggleRight } from 'lucide-react';
 
 const ProductForm = () => {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" ;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     productImage: null,
@@ -46,7 +46,7 @@ const ProductForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('${API_BASE_URL}/api/admin/create', product, {
+      const response = await axios.post(`${API_BASE_URL}/api/admin/create`, product, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

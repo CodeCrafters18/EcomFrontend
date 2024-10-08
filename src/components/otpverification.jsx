@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { AlertCircle, CheckCircle2, X } from 'lucide-react';
 
 export default function OtpInputWithValidation({details, numberOfDigits, onClose, fjkasdf }) {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const [otpSuccess, setOtpSuccess] = useState(null);

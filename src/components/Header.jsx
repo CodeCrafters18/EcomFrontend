@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Search, User, ShoppingCart, Menu,Edit,Trash2 } from 'lucide-react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Cart from './Cart';
+import { useUserContext } from '../context/UserContextProvider';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 import DeleteProduct from './adminDeleteProduct';
-export default function Header(isAdmin ) {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+import { UserContext } from '../context/UserContextProvider';
+export default function Header() {
+
+  const {isAdmin,details,isAuthenticated} = useUserContext();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
-  const [raj, setRaj] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [username, setUsername] = useState("");
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [deletePopup, setDeletePopup] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { setDetails,setIsAuthenticated } = useContext(UserContext);
+
   const debounce = (func, delay) => {
     let timeout;
     return (...args) => {
@@ -57,7 +61,7 @@ export default function Header(isAdmin ) {
   };
   const gotoMyorders = (name) => {
     if (!name) {
-      return navigate('/authpage');
+      return navigate('/authpage',{state: { message: 'Please login to view your orders'}});
     }
     navigate(`/${name}/myorders`);
     setIsMobileMenuOpen(false);
@@ -75,15 +79,7 @@ export default function Header(isAdmin ) {
     }
   }, []);
 
-  useEffect(() => {
-    if (Cookies.get('username')) {
-      setRaj(true);
-      setUsername(Cookies.get('username'));
-    } else {
-      setRaj(false);
-    }
-  }, []);
-
+ 
   const updateCartStatus = () => {
     if (Cookies.get('cart')) {
       const cartArr = JSON.parse(Cookies.get('cart'));
@@ -101,17 +97,21 @@ export default function Header(isAdmin ) {
   }, []);
 
   const logClick = async () => {
-    if (Cookies.get('username')) {
-      await axios.post(`${API_BASE_URL}/api/logout`);
-      Cookies.remove('username');
-      setRaj(false);
-      setIsProfileMenuOpen(false);
-      window.location.reload();
-      navigate('/');
-    } else {
-      navigate('/authpage');
+    try {
+      if (isAuthenticated) {
+        await axios.post(`${API_BASE_URL}/api/logout`,{},{withCredentials: true});
+        setIsProfileMenuOpen(false);
+        setIsAuthenticated(false);
+        setDetails({});
+        navigate('/',{state: { message: 'Logged out successfully'}});
+      } else {
+        navigate('/authpage');
+      }
+      setIsMobileMenuOpen(false);
+    } catch (error) {
+      console.error('Error logging out:', error);
+      
     }
-    setIsMobileMenuOpen(false);
   };
 
   const toggleProfileMenu = () => {
@@ -119,7 +119,7 @@ export default function Header(isAdmin ) {
   };
 
   const checkforlogin = () => {
-    if (!raj) {
+    if (!isAuthenticated) {
       navigate('/authpage');
     } else {
       toggleProfileMenu();
@@ -159,7 +159,7 @@ export default function Header(isAdmin ) {
                 {results.map((product) => (
                   <li key={product._id} onClick={() => gotoproduct(product._id)}>
                   {product.productName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {isAdmin.isAdmin.isAdmin && (
+                  {isAdmin&& (
                     <>
                       <button 
                         className="edit-btn11" 
@@ -189,16 +189,16 @@ export default function Header(isAdmin ) {
           )}
         </div>
         <nav className={`nav-section ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
-        {isAdmin.isAdmin.isAdmin ? (
+        {isAdmin ? (
   <button onClick={gotoTodaysorders} className="nav-button">Today's Orders</button>
 ) : (
-  <button onClick={() => gotoMyorders(username)} className="nav-button">My Orders</button>
+  <button onClick={() => gotoMyorders(details.username)} className="nav-button">My Orders</button>
 )}
 
           <div className="profile-section">
             <button onClick={checkforlogin} className="profile-button">
               <User size={24} />
-              <span>{raj ? username : 'Login'}</span>
+              <span>{isAuthenticated ? details.username : 'Login'}</span>
             </button>
             {isProfileMenuOpen && (
               <div className="profile-menu">

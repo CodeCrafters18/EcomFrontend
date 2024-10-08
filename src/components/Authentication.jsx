@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './Authentication.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import OtpInputWithValidation from './otpverification';
 import AlertSuccessMessage from './alertSuccess';
 import AlertFailureMessage from './alertFailure';
 import MorphingLoader from './MorphingLoader'; // Import the MorphingLoader component
+import { useUserContext } from '../context/UserContextProvider';
 
 const Authcomponent = () => {
   const navigate = useNavigate();
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+  const API_BASE_URL =import.meta.env.VITE_API_BASE_URL;
   const [alertSuccessVisible, setAlertSuccessVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
   const [alertMessage, setAlertMessage] = useState('');
@@ -25,11 +25,12 @@ const Authcomponent = () => {
   const [fdjghjd, setFdjghjd] = useState({});
   const [loggerdetails, setLoggerdetails] = useState({});
   const [isLoading, setIsLoading] = useState(false); // New state for loader
+  const { details } = useUserContext();
 
   const otpClick = async () => {
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails,{  withCredentials: true  });
+      const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails);
       setFdjghjd(response);
       if (response && response.data && response.data.data) {
         setIsOtpPopupVisible(true);
@@ -75,7 +76,7 @@ const Authcomponent = () => {
     } 
   };  
   useEffect(()=>{
-    if(Cookies.get("username")){
+    if(details.username){
       setIsLoading(false);
       navigate("/");
     }

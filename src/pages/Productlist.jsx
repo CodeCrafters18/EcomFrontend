@@ -16,7 +16,7 @@ const Productlist = ({ isAdmin }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const productsPerPage = 20;
-    const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true);

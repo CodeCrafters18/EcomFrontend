@@ -5,11 +5,12 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Truck, Package } from 'lucide-react';
 import AlertSuccessMessage from './alertSuccess.jsx'; // Import Alert component
+import AlertFailureMessage from './alertFailure.jsx';
 import MorphingLoader from './MorphingLoader.jsx'; // Import the loader component
 
 export default function TodaysOrders() {
     const currentDateInIST = new Date(Date.now());
-    const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [orders, setOrders] = useState([]);
     const [date, setDate] = useState(currentDateInIST);
     const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +19,7 @@ export default function TodaysOrders() {
     const [alertVisible, setAlertVisible] = useState(false); 
     const [alertMessage, setAlertMessage] = useState('');
     const [loading, setLoading] = useState(false); // New loading state
-
+    const [falertVisible, setFAlertVisible] = useState(false);
     const ordersPerPage = 5;
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -41,7 +42,7 @@ export default function TodaysOrders() {
         try {
             const fetchDateInUTC = new Date(fetchDate.getTime());
             const formattedDate = fetchDateInUTC.toISOString().split('T')[0];
-            const response = await axios.get(`${API_BASE_URL}/api/admin/getorders/${formattedDate}`);
+            const response = await axios.get(`${API_BASE_URL}/api/admin/getorders/${formattedDate}`, { withCredentials: true });
             if (response.data.success) {
                 setOrders(response.data.data);
             } else {
@@ -71,13 +72,12 @@ export default function TodaysOrders() {
         }));
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/admin/updateOrderStatus`, updatedStatus);
-            console.log('response', response);
+            const response = await axios.post(`${API_BASE_URL}/api/admin/updateOrderStatus`, updatedStatus, { withCredentials: true });
             setAlertMessage(response.data.message);
             setAlertVisible(true);
         } catch (error) {
-            console.error('Error updating order status:', error);
-            alert('Failed to update order statuses');
+            setAlertMessage('Failed to update order status. Please try again later.');
+            setFAlertVisible(true);
         }
     };
 
@@ -105,7 +105,12 @@ export default function TodaysOrders() {
                     onClose={() => setAlertVisible(false)}
                 />
             )}
-
+            {falertVisible && (
+                <AlertFailureMessage    
+                    message={alertMessage}
+                    onClose={() => setFAlertVisible(false)}
+                />
+            )}
             {loading ? ( // Show loader if loading is true
                 <MorphingLoader />
             ) : (

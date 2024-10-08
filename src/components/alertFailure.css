@@ -2,7 +2,7 @@
     position: fixed;
     top: 20px;
     right: 20px; /* Positioning from the right */
-    z-index: 1000; /* Ensure it's on top of other elements */
+    z-index: 10000; /* Ensure it's on top of other elements */
     background-color: #f8d7da; /* Light red background */
     color: #721c24; /* Dark red text */
     border: 1px solid #f5c6cb; /* Darker red border */

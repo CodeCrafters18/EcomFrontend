@@ -23,7 +23,7 @@ const slides = [
   { mainImage: image4 },
 ];
 
-const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" // Replace with your actual Render.com URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;// Replace with your actual Render.com URL
 
 const Home = (isAdmin ) => {
   const [products, setProducts] = useState([]);

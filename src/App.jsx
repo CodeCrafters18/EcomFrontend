@@ -1,66 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useUserContext, UserContextProvider } from './context/UserContextProvider';
+import MorphingLoader from './components/MorphingLoader';
+
 // Import your components
 import Home from './pages/Home';
 import ProductPage from './pages/Productpage';
 import Authpage from './pages/Authpage';
 import AdminCreateProduct from './pages/admin.createProduct';
 import Productlist from './pages/Productlist';
-import OtpInputWithValidation from './components/otpverification';
 import EditProductForm from './components/Editproductdetails';
 import Checkout from './pages/Checkoutpage';
 import Auth from './components/Auth';
 import Orders from './pages/Orders';
-import OrderManagement from './pages/adminTodayorder.jsx';
-import OrderToday from './pages/adminTodayorder.jsx';
-import AdminOrderTodayDetail from './pages/AdminTodayOrderDetail.jsx';
+import OrderToday from './pages/adminTodayorder';
+import AdminOrderTodayDetail from './pages/AdminTodayOrderDetail';
 
-// Create a custom hook for authentication
-const useAuth = () => {
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" ;
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [details, setDetails] = useState({});
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/admin/verify`, { withCredentials: true });
-        
-        const { isAuthenticated, admin, user } = response.data.data;
-        
-        setIsAuthenticated(isAuthenticated);
-        setIsAdmin(!!admin);
-        
-        if (admin) {
-          setDetails(admin);
-        } else if (user) {
-          setDetails(user);
-        }
-      } catch (error) {
-        setIsAuthenticated(false);
-        setIsAdmin(false);
-        setDetails({});
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  return { isAuthenticated, isAdmin, isLoading, details };
-};
-
-// Create a ProtectedRoute component
+// ProtectedRoute components
 const ProtectedRoute = ({ children, adminOnly = false }) => {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading } = useUserContext();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MorphingLoader />;
   }
 
   if (!isAuthenticated || (adminOnly && !isAdmin)) {
@@ -71,10 +33,10 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 };
 
 const UserProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useUserContext();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MorphingLoader />;
   }
 
   if (!isAuthenticated) {
@@ -84,8 +46,9 @@ const UserProtectedRoute = ({ children }) => {
   return children;
 };
 
-function App() {
-  const { isAuthenticated, isAdmin, isLoading, details } = useAuth();
+// AppContent component
+function AppContent() {
+  const { isAuthenticated, isAdmin, isLoading, details } = useUserContext();
 
   useEffect(() => {
     if (details.username) {
@@ -96,24 +59,24 @@ function App() {
   }, [details, isAdmin, isAuthenticated]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MorphingLoader />;
   }
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home isAdmin={isAdmin} />} />
-        <Route path="/product/:id" element={<ProductPage isAdmin={isAdmin} />} />
-        <Route path="/authpage" element={<Authpage  isAdmin={isAdmin}/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/product/:id" element={<ProductPage  />} />
+        <Route path="/authpage" element={<Authpage  />} />
         <Route 
           path="/admin/create" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <AdminCreateProduct isAdmin={isAdmin}/>
+              <AdminCreateProduct />
             </ProtectedRoute>
           } 
         />
-        <Route path="/products/:category" element={<Productlist isAdmin={isAdmin} />} />
+        <Route path="/products/:category" element={<Productlist  />} />
         <Route 
           path="/update/:id" 
           element={
@@ -126,16 +89,16 @@ function App() {
           path="/checkout" 
           element={
             <UserProtectedRoute>
-              <Checkout isAdmin={isAdmin} />
+              <Checkout  />
             </UserProtectedRoute>
           }
         />
-         <Route path="/mobileotp" element={<Auth />} />
-         <Route 
+        <Route path="/mobileotp" element={<Auth />} />
+        <Route 
           path="/todayorders" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <OrderToday isAdmin={isAdmin}/>
+              <OrderToday  />
             </ProtectedRoute>
           } 
         />
@@ -143,13 +106,29 @@ function App() {
           path="/order/:id" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <AdminOrderTodayDetail isAdmin={isAdmin}/>
+              <AdminOrderTodayDetail  />
             </ProtectedRoute>
           } 
         />
-         <Route path='/:username/myorders' element={<UserProtectedRoute><Orders isAdmin={isAdmin}/></UserProtectedRoute>} />
+        <Route 
+          path='/:username/myorders' 
+          element={
+            <UserProtectedRoute>
+              <Orders />
+            </UserProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
+  );
+}
+
+// Main App component
+function App() {
+  return (
+    <UserContextProvider>
+      <AppContent />
+    </UserContextProvider>
   );
 }
 

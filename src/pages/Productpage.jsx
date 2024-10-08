@@ -9,7 +9,7 @@ import axios from 'axios';
 function ProductPage(isAdmin) {
   const { id } = useParams(); 
   const [productData, setProductData] = useState(null);
-  const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" // Replace with your actual Render.com URL
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;// Replace with your actual Render.com URL
 
   useEffect(() => {
     window.scrollTo(0, 0); 

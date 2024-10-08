@@ -5,7 +5,7 @@ import './TodayOrderDetail.css';
 import MorphingLoader from './MorphingLoader';
 
 export default function OrderDetails() {
-    const API_BASE_URL = "https://ecombackend-hrmb.onrender.com" 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ export default function OrderDetails() {
     const fetchOrderDetails = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_BASE_URL}/api/admin/order/${id}`);
+            const response = await axios.get(`${API_BASE_URL}/api/admin/order/${id}`,{ withCredentials: true });
             if (response && response.data && response.data.data) {
                 setOrder(response.data.data[0]);
             } else {
