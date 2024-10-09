@@ -15,7 +15,9 @@ const UserContext = createContext();
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/admin/verify`, { withCredentials: true });
+        const response = await axios.get(`${API_BASE_URL}/api/admin/verify`, { withCredentials: true, headers: {
+          'Content-Type': 'application/json',
+        }});
         
         const { isAuthenticated, admin, user } = response.data.data;
         
