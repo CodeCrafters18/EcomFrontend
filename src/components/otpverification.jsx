@@ -45,6 +45,12 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
       },{  withCredentials: true  ,headers: {
         'Content-Type': 'application/json',
     }});
+    if(response){
+            console.log(response);
+            setOtpSuccess("✅ Correct OTP. Login Successful");
+            navigate("/",{ state: { message: "Admin LoggedIn Successfully" }});
+            window.location.reload();
+    }
     } catch (error) {
       console.error('Admin login failed:', error);
       setOtpError("❌ Admin login failed. Please try again.");
@@ -89,15 +95,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         } else if (fjkasdf.statusCode === 244) {
           loginadmin();
         }
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7);
-        setTimeout(() => {
-          setOtpSuccess("✅ Correct OTP. Login Successful");
-          setTimeout(() => {
-            navigate("/",{ state: { message: "Admin LoggedIn Successfully" }});
-            window.location.reload();
-          }, 300);
-        }, 0);
+          
       }
     } else {
       setOtpError(null);
