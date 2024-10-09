@@ -23,6 +23,8 @@ const slides = [
   { mainImage: image4 },
 ];
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;// Replace with your actual Render.com URL
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [flashMessage, setFlashMessage] = useState(null);
@@ -33,7 +35,7 @@ const Home = () => {
 
   const getProductsByCategory = async (category, page = 1, limit = 10) => {
     try {
-      const response = await axios.get(`/api/admin/getbycategory/${category}`, {
+      const response = await axios.get(`${API_BASE_URL}/api/admin/getbycategory/${category}`, {
         params: { page, limit },
       });
       return response.data.data.products;
