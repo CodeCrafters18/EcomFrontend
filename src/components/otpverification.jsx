@@ -42,7 +42,9 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
       await axios.post(`${API_BASE_URL}/api/admin/login`, {
         email: details.email,
         password: details.password,
-      },{  withCredentials: true  });
+      },{  withCredentials: true  ,headers: {
+        'Content-Type': 'application/json',
+    }});
     } catch (error) {
       console.error('Admin login failed:', error);
       setOtpError("❌ Admin login failed. Please try again.");
