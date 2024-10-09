@@ -42,7 +42,6 @@ const UserProtectedRoute = ({ children }) => {
   if (!isAuthenticated) {
     return <Navigate to="/authpage" replace />;
   }
-
   return children;
 };
 
