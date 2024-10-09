@@ -25,7 +25,7 @@ function ProductPage() {
     };
 
     fetchProductData();
-  }, [id]);
+  }, []);
 
   if (!productData) {
     return <MorphingLoader />;
