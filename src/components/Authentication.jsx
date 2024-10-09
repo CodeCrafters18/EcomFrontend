@@ -53,7 +53,9 @@ const Authcomponent = () => {
 
     try {
       setIsLoading(true); // Show loader
-      const response = await axios.post(`${API_BASE_URL}/api/${type}`, formData,{  withCredentials: true  });
+      const response = await axios.post(`${API_BASE_URL}/api/${type}`, formData,{  withCredentials: true  ,headers: {
+        'Content-Type': 'application/json',
+    }});
       if (response.status === 285) {
         setLoggerdetails(response.data.data);
         setLogger(true);
