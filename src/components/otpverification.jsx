@@ -39,7 +39,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
 
   const loginadmin = async () => {
     try {
-      await axios.post(`${API_BASE_URL}/api/admin/login`, {
+      const response= await axios.post(`${API_BASE_URL}/api/admin/login`, {
         email: details.email,
         password: details.password,
       },{  withCredentials: true  ,headers: {
@@ -94,7 +94,7 @@ export default function OtpInputWithValidation({details, numberOfDigits, onClose
         setTimeout(() => {
           setOtpSuccess("✅ Correct OTP. Login Successful");
           setTimeout(() => {
-            navigate("/",{ state: { message: fjkasdf.message }});
+            navigate("/",{ state: { message: "Admin LoggedIn Successfully" }});
             window.location.reload();
           }, 300);
         }, 0);

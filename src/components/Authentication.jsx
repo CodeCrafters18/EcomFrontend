@@ -33,6 +33,8 @@ const Authcomponent = () => {
       const response = await axios.post(`${API_BASE_URL}/api/checkotp/sendotp`, loggerdetails);
       setFdjghjd(response);
       if (response && response.data && response.data.data) {
+        setAlertMessage(response.data.message);
+        setAlertSuccessVisible(true);
         setIsOtpPopupVisible(true);
       } else {
         console.error("Response data is missing or invalid.");
