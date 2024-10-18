@@ -52,7 +52,9 @@ const BillingDetails = () => {
         cart
       };
 
-      const response = await axios.post(`${API_BASE_URL}/api/payment/createorder`, submissionData);
+      const response = await axios.post(`${API_BASE_URL}/api/payment/createorder`, submissionData,{  withCredentials: true  ,headers: {
+        'Content-Type': 'application/json',
+    }});
       if (response.data && response.data.data) {
         initializeRazorpay(response.data.data);
       } else {
@@ -99,7 +101,9 @@ const BillingDetails = () => {
         amount: orderData.amount
       };
 
-      const response = await axios.post(`${API_BASE_URL}/api/payment/verify`, verificationData);
+      const response = await axios.post(`${API_BASE_URL}/api/payment/verify`, verificationData,{  withCredentials: true  ,headers: {
+        'Content-Type': 'application/json',
+      }});
       if (response.data.success) {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
