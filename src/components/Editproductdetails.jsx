@@ -4,11 +4,13 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToggleLeft, ToggleRight } from "lucide-react";
 import AlertSuccessMessage from "./alertSuccess";
+import MorphingLoader from "../components/MorphingLoader";
 
 const EditProductForm = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [imgStatus, setImgStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [productData, setProductData] = useState(null);
   const [product, setProduct] = useState({
     productImage: null,
@@ -85,7 +87,7 @@ const EditProductForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setIsSubmitting(true);
     try {
       let data;
       let headers = {};
@@ -124,130 +126,139 @@ const EditProductForm = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+    }finally {
+      setIsSubmitting(false); // Stop loading
     }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MorphingLoader />;
   }
 
   return (
-    <div className="product-form-container">
-      <h2>Edit Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="productImage">Product Image:</label>
-          <input
-            type="file"
-            id="productImage"
-            name="productImage"
-            onChange={handleFileChange}
-            accept="image/*"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="productName">Product Name:</label>
-          <input
-            type="text"
-            id="productName"
-            name="productName"
-            value={product.productName}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group priceandqty">
-          <div className="price1">
-            <label htmlFor="price1">Our Price:</label>
+    <>
+      {isSubmitting && <MorphingLoader />}
+      <div className="product-form-container">
+        <h2>Edit Product</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="productImage">Product Image:</label>
             <input
-              type="number"
-              id="price1"
-              name="price1"
-              value={product.price[0]}
-              onChange={(e) => handlePriceChange(e, 0)}
-              required
+              type="file"
+              id="productImage"
+              name="productImage"
+              onChange={handleFileChange}
+              accept="image/*"
             />
           </div>
-          <div className="price2">
-            <label htmlFor="price2">MRP:</label>
+          <div className="form-group">
+            <label htmlFor="productName">Product Name:</label>
             <input
-              type="number"
-              id="price2"
-              name="price2"
-              value={product.price[1]}
-              onChange={(e) => handlePriceChange(e, 1)}
-              required
-            />
-          </div>
-          <div className="fixedqty">
-            <label htmlFor="fixedqty">Fixed Quantity:</label>
-            <input
-              type="number"
-              min={0}
-              id="fixedqty"
-              name="fixedqty"
-              value={product.fixedqty}
+              type="text"
+              id="productName"
+              name="productName"
+              value={product.productName}
               onChange={handleInputChange}
               required
             />
           </div>
-        </div>
-        <div className="form-group catgoryandavailability">
-          <div className="category">
-            <label htmlFor="category">Category:</label>
-            <select
-              name="category"
-              id="category"
-              className="dropdown"
-              value={product.category}
+          <div className="form-group priceandqty">
+            <div className="price1">
+              <label htmlFor="price1">Our Price:</label>
+              <input
+                type="number"
+                id="price1"
+                name="price1"
+                value={product.price[0]}
+                onChange={(e) => handlePriceChange(e, 0)}
+                required
+              />
+            </div>
+            <div className="price2">
+              <label htmlFor="price2">MRP:</label>
+              <input
+                type="number"
+                id="price2"
+                name="price2"
+                value={product.price[1]}
+                onChange={(e) => handlePriceChange(e, 1)}
+                required
+              />
+            </div>
+            <div className="fixedqty">
+              <label htmlFor="fixedqty">Fixed Quantity:</label>
+              <input
+                type="number"
+                min={0}
+                id="fixedqty"
+                name="fixedqty"
+                value={product.fixedqty}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="form-group catgoryandavailability">
+            <div className="category">
+              <label htmlFor="category">Category:</label>
+              <select
+                name="category"
+                id="category"
+                className="dropdown"
+                value={product.category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="Haldiram">Haldiram</option>
+                <option value="G2">G2</option>
+              </select>
+            </div>
+            <div className="availability">
+              <label htmlFor="availability">Availability:</label>
+              <button
+                type="button"
+                id="availability"
+                className={`availability-toggle ${
+                  product.availability ? "active" : "inactive"
+                }`}
+                onClick={toggleAvailability}
+              >
+                {product.availability ? <ToggleRight /> : <ToggleLeft />}
+              </button>
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="characs">Characteristics (comma-separated):</label>
+            <input
+              type="text"
+              id="characs"
+              name="characs"
+              value={product.characs.join(", ")}
+              onChange={(e) => handleArrayInputChange(e, "characs")}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              name="description"
+              value={product.description}
               onChange={handleInputChange}
               required
-            >
-              <option value="">Select Category</option>
-              <option value="Haldiram">Haldiram</option>
-              <option value="G2">G2</option>
-            </select>
+            ></textarea>
           </div>
-          <div className="availability">
-            <label htmlFor="availability">Availability:</label>
-            <button
-              type="button"
-              id="availability"
-              className={`availability-toggle ${
-                product.availability ? "active" : "inactive"
-              }`}
-              onClick={toggleAvailability}
-            >
-              {product.availability ? <ToggleRight /> : <ToggleLeft />}
-            </button>
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="characs">Characteristics (comma-separated):</label>
-          <input
-            type="text"
-            id="characs"
-            name="characs"
-            value={product.characs.join(", ")}
-            onChange={(e) => handleArrayInputChange(e, "characs")}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={product.description}
-            onChange={handleInputChange}
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="submit-button">
-          Update Product
-        </button>
-      </form>
-    </div>
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Updating..." : "Update Product"}
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
