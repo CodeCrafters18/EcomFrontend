@@ -31,7 +31,7 @@
   background-color: #2e8b57;
   color: #ffffff;
   border: none;
-  padding: 10px;
+  padding: 5px 5px;
   cursor: pointer;
   border-radius: 4px;
   z-index: 1001;
@@ -247,4 +247,23 @@
   .ecom-nav__desktop {
     display: none;
   }
+}
+
+.ecom-nav__desktop-link.active::after {
+  width: 100%;
+}
+
+.ecom-nav__desktop-dropdown-link.active {
+  background-color: #f8f8f8;
+  color: #2e8b57;
+}
+
+/* Mobile styles */
+.ecom-nav__mobile-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ecom-nav__mobile-sublink.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
 }

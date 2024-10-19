@@ -153,6 +153,13 @@ export default function Header() {
             <button className="search-button">
               <Search size={20} />
             </button>
+            &nbsp;&nbsp;
+            {
+              isAdmin && (
+                <button onClick={() => navigate('/admin/create')} className="createbtn">
+                  Add
+                </button> )
+            }
           </div>
           {results.length > 0 && (
             <div className="search-results">
@@ -166,13 +173,13 @@ export default function Header() {
                         className="edit-btn11" 
                         onClick={(e) => Editbtn(product._id, e)}
                       >
-                        <Edit size={16} />
+                        <Edit size={16} />Edit
                       </button>&nbsp;&nbsp;
                       <button 
                         className="delete-btn11" 
                         onClick={(e) => deleteBtn( e,product._id)}
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={16} />Delete
                       </button>
                     </>
                   )}

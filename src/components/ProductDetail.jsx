@@ -116,8 +116,8 @@ const ProductDetail = ({
           )}
           {verify && (
             <div className="pd-admin-actions">
-              <button className="pd-edit-button" onClick={(e) => Editbtn(e)}><Edit size={20} /></button>
-              <button className="pd-delete-button" onClick={(e) => deletebtn(e)}><Trash2 size={20} /></button>
+              <button className="pd-edit-button" onClick={(e) => Editbtn(e)}><Edit size={20} />Edit</button>
+              <button className="pd-delete-button" onClick={(e) => deletebtn(e)}><Trash2 size={20} />Delete</button>
             </div>
           )}
         </div>
