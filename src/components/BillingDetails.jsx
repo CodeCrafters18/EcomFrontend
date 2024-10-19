@@ -2,10 +2,14 @@ import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import './BillingDetails.css'
+import { useUserContext } from '../context/UserContextProvider'
 import {useNavigate} from 'react-router-dom'
+import MorphingLoader from '../components/MorphingLoader'
 
 const BillingDetails = () => {
   const navigate = useNavigate();
+  const {details}=useUserContext();
+  const [isLoading, setIsLoading] = useState(false);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   useEffect(() => {
     // Dynamically load the Razorpay script
@@ -43,6 +47,7 @@ const BillingDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       const cartData = Cookies.get('cart');
       const cart = cartData ? JSON.parse(cartData) : [];
@@ -62,6 +67,7 @@ const BillingDetails = () => {
       }
     } catch (error) {
       console.error('Error submitting order:', error);
+      setIsLoading(false); // Stop loading if there's an error
     }
   };
 
@@ -74,6 +80,7 @@ const BillingDetails = () => {
       description: "THIS IS THE PAYMENT-GATEWAY AT APARNA DISTRIBUTORS FOR YOUR ORDER",
       order_id: orderData.id,
       handler: function (response) {
+        setIsLoading(false);
         verifyPayment(response, orderData);
       },
       prefill: {
@@ -83,7 +90,8 @@ const BillingDetails = () => {
       },
       theme: {
         color: "#3399cc"
-      }
+      },
+      
     };
 
     const rzp = new window.Razorpay(options);
@@ -107,9 +115,8 @@ const BillingDetails = () => {
       if (response.data.success) {
         // Payment verified successfully
         // Clear the cart and redirect to a success page
-        let name= Cookies.get('username');
         Cookies.remove('cart');
-        navigate(`/${name}/myorders`);
+        navigate(`/${details.username}/myorders`);
         // Redirect to success page or show success message
       } else {
         // Handle payment verification failure
@@ -122,6 +129,8 @@ const BillingDetails = () => {
 
 
   return (
+    <>
+    {isLoading && <MorphingLoader />}{
     <form className="billing-details" onSubmit={handleSubmit}>
       <h2>Billing Details</h2>
       
@@ -270,7 +279,8 @@ const BillingDetails = () => {
         </div>
       </div>
       <button type="submit" className="place-order-btn">Place Order</button>
-    </form>
+    </form>}
+    </>
   )
 }
 

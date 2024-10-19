@@ -3,6 +3,7 @@ import './Cart.css';
 import { X, Minus, Plus } from 'lucide-react';
 import Cookies from 'js-cookie';
 import {useNavigate} from 'react-router-dom';
+import { useUserContext } from '../context/UserContextProvider';
 
 const CartItem = ({ item, updateQuantity, removeItem }) => (
   <div className="cart-item">
@@ -29,7 +30,7 @@ const CartItem = ({ item, updateQuantity, removeItem }) => (
   </div>
 );
 const Cart = ({ isOpen, onClose }) => {
-  
+const { isAuthenticated } = useUserContext();
 const navigate=useNavigate();
   const [items, setItems] = useState([]);
 
@@ -60,6 +61,9 @@ const navigate=useNavigate();
     dispatchCartUpdate(); // Notify other components
   };
   const handleCheckout = () => {
+    if (!isAuthenticated) {
+      return navigate('/authpage',{state: { message: 'Please login to checkout billing details'}});
+    }
     navigate('/checkout');
   };
 
@@ -112,7 +116,6 @@ const navigate=useNavigate();
         </div>
 
         <div className="cart-buttons">
-          <button className="view-cart-button">VIEW CART</button>
           <button className="checkout-button" onClick={handleCheckout}>CHECKOUT</button>
         </div>
       </div>

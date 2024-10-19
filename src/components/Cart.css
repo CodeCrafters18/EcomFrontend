@@ -181,13 +181,16 @@
 }
 
 .view-cart-button, .checkout-button {
-  padding: 12px;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 25px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .view-cart-button {
@@ -290,7 +293,10 @@
   }
 
   .view-cart-button, .checkout-button {
-    padding: 10px;
-    font-size: 14px;
+    margin: 2px;
+    padding: 10px 7px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    white-space: nowrap;
   }
 }
