@@ -144,6 +144,7 @@
 
 .pd-quantity-input {
   width: 3rem;
+  height: 2rem;
   text-align: center;
   border: none;
   font-size: 1rem;
@@ -164,6 +165,10 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
+.pd-cart-button:active{
+  transform: scale(0.95);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 
 .pd-cart-button:hover:not(:disabled) {
   background-color: var(--pd-primary-dark);
@@ -182,33 +187,55 @@
 
 .pd-edit-button,
 .pd-delete-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  flex: 1;
+  margin: 0 0.25rem;
+}
+
+.pd-edit-button:active,
+.pd-delete-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .pd-edit-button {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #2e8b57;
+  color: #ffffff;
 }
 
 .pd-edit-button:hover {
-  background-color: #2563eb;
+  color: #176628;
+  background-color: #ffffff;
+  border: 2px solid #2e8b57;
 }
 
 .pd-delete-button {
-  background-color: #ef4444;
-  color: white;
+  background-color: #ffffff;
+  color: #df0b0b;
+  border: 2px solid #df0b0b;
 }
 
 .pd-delete-button:hover {
-  background-color: #dc2626;
+  background-color: #df0b0b;
+  color: #ffffff;
 }
+
+.pd-edit-button svg,
+.pd-delete-button svg {
+  margin-right: 0.25rem;
+  width: 16px;  /* Adjust size of SVG */
+  height: 16px; /* Adjust size of SVG */
+}
+
 
 @media (min-width: 768px) {
   .pd-container {
